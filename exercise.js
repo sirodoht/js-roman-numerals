@@ -45,11 +45,9 @@ RomanNumber.prototype.toInt = function () {
       console.log('ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]:', ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
       number += (ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
       doubleLetter = false;
-    } else {
-      if (!nextLetter) {
-        console.log('adding:', ROMAN_TO_DIGIT[currentLetter]);
-        number += ROMAN_TO_DIGIT[currentLetter];
-      }
+    } else if (!nextLetter) {
+      console.log('adding:', ROMAN_TO_DIGIT[currentLetter]);
+      number += ROMAN_TO_DIGIT[currentLetter];
     }
     if (nextLetter && ROMAN_TO_DIGIT[nextLetter] > ROMAN_TO_DIGIT[currentLetter]) {
       doubleLetter = true;
@@ -58,6 +56,10 @@ RomanNumber.prototype.toInt = function () {
     console.log('');
   }
   return number;
+}
+
+RomanNumber.prototype.toString = function () {
+
 }
 
 RomanNumber.isValid = function (numString) {
@@ -73,20 +75,24 @@ testRoman = function () {
   // console.log(RomanNumber.isValid('s'));
   // console.log(RomanNumber.isValid('C'));
   // console.log(RomanNumber.isValid('X'));
-  var romanNumbers = {
-    'XI': 11,
-    'CDXXIX': 429,
-    'MCDLXXXII': 1482,
-    'MCMLXXX': 1980,
-    'MMMMCMXCIX': 4999,
-    'MMMMDMXCIX': 4599,
-  };
-  Object.keys(romanNumbers).forEach(function (item) {
-    var number = new RomanNumber(item);
-    if (number.toInt() !== romanNumbers[item]) {
-      throw new Error('.toInt() failed');
-    }
-  });
+
+  // var romanNumbers = {
+  //   'XI': 11,
+  //   'CDXXIX': 429,
+  //   'MCDLXXXII': 1482,
+  //   'MCMLXXX': 1980,
+  //   'MMMMCMXCIX': 4999,
+  //   'MMMMDMXCIX': 4599,
+  // };
+  // Object.keys(romanNumbers).forEach(function (item) {
+  //   var number = new RomanNumber(item);
+  //   if (number.toInt() !== romanNumbers[item]) {
+  //     throw new Error('.toInt() failed');
+  //   }
+  // });
+
+  var romanNumber1 = new RomanNumber(1968);
+  console.log('1968 toString:', romanNumber1.toString());
 };
 
 testRoman();
