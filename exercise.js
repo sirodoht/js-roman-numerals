@@ -95,9 +95,22 @@ RomanNumber.prototype.toString = function () {
     } else if (scale === 5) {
 
     } else if (scale > 5 && scale < 9) {
+      console.log('scale 6, 7, 8 calc');
+      var scaleMultiplied = scale * divideRatio;
 
     } else if (scale === 9) {
       console.log('scale 9 calc');
+      var scaleMultiplied = scale * divideRatio;
+
+      var letterCombination = '';
+      var keys = Object.keys(ROMAN_TO_DIGIT);
+      for (var i = 0; i < keys.length; i++) {
+        if (scaleMultiplied === ROMAN_TO_DIGIT[keys[i]]) {
+          letterCombination = keys[i];
+          break;
+        }
+      }
+      roman += letterCombination;
     }
 
     modRatio /= 10;
@@ -106,6 +119,7 @@ RomanNumber.prototype.toString = function () {
     if (letter === 'X') {
       done = true;
     }
+    console.log('');
   }
 
   console.log('final roman:', roman);
