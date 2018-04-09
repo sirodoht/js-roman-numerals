@@ -94,6 +94,11 @@ RomanNumber.prototype.toString = function () {
         roman += letter;
       }
     } else if (scale === 4) {
+      console.log('scale 4 calc');
+      var scaleMultiplied = scale * divideRatio;
+      console.log('scaleMultiplied:', scaleMultiplied);
+      console.log(':RomanNumber.getRoman(scaleMultiplied):', RomanNumber.getRoman(scaleMultiplied));
+      roman += RomanNumber.getRoman(scaleMultiplied);
 
     } else if (scale >= 5 && scale < 9) {
       console.log('scale 5, 6, 7, 8 calc');
@@ -112,16 +117,8 @@ RomanNumber.prototype.toString = function () {
     } else if (scale === 9) {
       console.log('scale 9 calc');
       var scaleMultiplied = scale * divideRatio;
-
-      var letterCombination = '';
-      var keys = Object.keys(ROMAN_TO_DIGIT);
-      for (var i = 0; i < keys.length; i++) {
-        if (scaleMultiplied === ROMAN_TO_DIGIT[keys[i]]) {
-          letterCombination = keys[i];
-          break;
-        }
-      }
-      roman += letterCombination;
+      console.log(':RomanNumber.getRoman(scaleMultiplied):', RomanNumber.getRoman(scaleMultiplied));
+      roman += RomanNumber.getRoman(scaleMultiplied);
     }
 
     if (letter === 'I') {
