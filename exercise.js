@@ -251,16 +251,24 @@ testRoman = function () {
   }
 
   // check invalid romans
+  var invalidCases = ['10000', 'CD1X', 'error', 'MMMMCMXCIX', 'MMMMDMXCIX'];
+  invalidCases.forEach(function (item) {
+    if (RomanNumber.isValid(item)) {
+      throw new Error('valid test case failed:', item);
+    }
+  })
+
+  // check string number case
   try {
-    RomanNumber.isValid('s');
+    new RomanNumber('1473'); // this should throw
+    throw new Error('test case for string number failed'); // this should never run
   } catch (err) {
-
+    if (err.message !== 'invalid value') {
+      throw new Error('test case for string number failed');
+    }
   }
-  // console.log(RomanNumber.isValid('s'));
-  // console.log(RomanNumber.isValid('C'));
-  // console.log(RomanNumber.isValid('X'));
-  console.log(RomanNumber.isValid('MMMCM'));
 
+  // check nominal test cases for .toInt() method
   var romanNumbers = {
     'I': 1,
     'III': 3,
@@ -270,8 +278,6 @@ testRoman = function () {
     'CDXXIX': 429,
     'MCDLXXXII': 1482,
     'MCMLXXX': 1980,
-    // 'MMMMCMXCIX': 4999,
-    // 'MMMMDMXCIX': 4599,
   };
   Object.keys(romanNumbers).forEach(function (item) {
     var number = new RomanNumber(item);
@@ -280,6 +286,7 @@ testRoman = function () {
     }
   });
 
+  // check nominal test cases for .toString() method
   var romanNumbersInverse = {
     '1': 'I',
     '3': 'III',
@@ -299,7 +306,7 @@ testRoman = function () {
     }
   });
 
-  // test case from pdf
+  // check example test case from pdf
   var romanNumber1 = new RomanNumber('XX');
   var romanNumber2 = new RomanNumber(40);
   if (romanNumber1.toInt() != 20) {
