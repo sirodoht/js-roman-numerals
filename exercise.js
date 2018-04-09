@@ -24,7 +24,9 @@ function RomanNumber(num) {
 }
 
 RomanNumber.prototype.toInt = function () {
+  console.log('toInt:', this.roman);
   var number = 0;
+  var doubleLetter = false;
   for (var i = 0; i < this.roman.length; i++) {
     var currentLetter = this.roman.charAt(i);
     var nextLetter = this.roman.charAt(i + 1);
@@ -35,8 +37,25 @@ RomanNumber.prototype.toInt = function () {
     console.log('nextLetter:', nextLetter);
     console.log('ROMAN_TO_DIGIT[nextLetter]:', ROMAN_TO_DIGIT[nextLetter]);
     console.log('ROMAN_TO_DIGIT[currentLetter]:', ROMAN_TO_DIGIT[currentLetter]);
-    if (nextLetter && ROMAN_TO_DIGIT[nextLetter] > ROMAN_TO_DIGIT[currentLetter]) {}
+    if (nextLetter && ROMAN_TO_DIGIT[nextLetter] < ROMAN_TO_DIGIT[currentLetter]) {
+      number += ROMAN_TO_DIGIT[currentLetter];
+    }
+    if (doubleLetter) {
+      var previousLetter = this.roman.charAt(i - 1);
+      console.log('ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]:', ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
+      number += (ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
+      doubleLetter = false;
+    }
+    if (nextLetter && ROMAN_TO_DIGIT[nextLetter] > ROMAN_TO_DIGIT[currentLetter]) {
+      doubleLetter = true;
+    }
+    if (!nextLetter) {
+      number += ROMAN_TO_DIGIT[currentLetter];
+    }
+    console.log('sum now:', number);
+    console.log('');
   }
+  return number;
 }
 
 RomanNumber.isValid = function (numString) {
@@ -53,8 +72,12 @@ testRoman = function () {
   // console.log(RomanNumber.isValid('C'));
   // console.log(RomanNumber.isValid('X'));
   var romanNumber1 = new RomanNumber('XI');
-  console.log('romanNumber1.toInt():', romanNumber1.toInt());
-  // if (romanNumber1.toInt() !== 20) {
+  if (romanNumber1.toInt() !== 11) {
+    throw new Error();
+  }
+  var romanNumber2 = new RomanNumber('CDXXIX');
+  console.log('romanNumber2.toInt():', romanNumber2.toInt());
+  // if (romanNumber2.toInt() !== 429) {
   //   throw new Error();
   // }
   // if (romanNumber1.toString() !== 'XX') {
