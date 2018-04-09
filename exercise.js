@@ -17,6 +17,10 @@ var ROMAN_TO_DIGIT = {
 };
 
 function RomanNumber(num) {
+  if (!(this instanceof RomanNumber)) {
+    return new RomanNumber(num);
+  }
+
   if (!num) {
     throw new Error('invalid value');
   }
@@ -175,6 +179,15 @@ testRoman = function () {
     if (err.message !== 'invalid range') {
       throw new Error('test case for range failed');
     }
+  }
+
+  // check constructor without 'new' keyword
+  var romanNumberWithoutNew = RomanNumber('XX');
+  if (romanNumberWithoutNew.toInt() != 20) {
+    throw new Error('romanNumberWithoutNew test case failed');
+  }
+  if (romanNumberWithoutNew.toString() != 'XX') {
+    throw new Error('romanNumberWithoutNew test case failed');
   }
 
   // console.log(RomanNumber.isValid('s'));
