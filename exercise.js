@@ -123,11 +123,33 @@ RomanNumber.prototype.toString = function () {
 }
 
 RomanNumber.isValid = function (numString) {
+  // check if all letters are the roman ones
   for (var i = 0; i < numString.length; i++) {
     if (ROMAN_ELEMENTS.indexOf(numString[i].toUpperCase()) === -1) {
       return false;
     }
   }
+
+  // check if more than 3 times of a roman letter appears
+  var letterDict = {};
+  numString.split('').forEach(function (letter) {
+    // console.log('letterDict[letter]:', letterDict[letter]);
+    if (letterDict[letter] !== 0) {
+      letterDict[letter] = 0;
+      // console.log('letterDict[letter]:', letterDict[letter]);
+    } else {
+      letterDict[letter]++;
+    }
+  });
+  console.log('letterDict:', letterDict);
+
+  var keys = Object.keys(letterDict);
+  for (var i = 0; i < keys.length; i++) {
+    if (letterDict[keys[i]] > 3) {
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -161,6 +183,16 @@ testRoman = function () {
     }
   }
 
+  // test 0
+  try {
+    new RomanNumber(0); // this should throw
+    throw new Error('test case for zero failed'); // this should never run
+  } catch (err) {
+    if (err.message !== 'invalid value') {
+      throw new Error('test case for zero failed');
+    }
+  }
+
   // check range <1
   try {
     new RomanNumber(-1023); // this should throw
@@ -190,11 +222,18 @@ testRoman = function () {
     throw new Error('romanNumberWithoutNew test case failed');
   }
 
+  // check
+
   // console.log(RomanNumber.isValid('s'));
   // console.log(RomanNumber.isValid('C'));
   // console.log(RomanNumber.isValid('X'));
+  console.log(RomanNumber.isValid('MMMM'));
 
   var romanNumbers = {
+    'I': 1,
+    'III': 3,
+    'IV': 4,
+    'V': 5,
     'XI': 11,
     'CDXXIX': 429,
     'MCDLXXXII': 1482,
@@ -210,6 +249,10 @@ testRoman = function () {
   });
 
   var romanNumbersInverse = {
+    '1': 'I',
+    '3': 'III',
+    '4': 'IV',
+    '5': 'V',
     '1945': 'MCMXLV',
     '1968': 'MCMLXVIII',
     '1473': 'MCDLXXIII',
