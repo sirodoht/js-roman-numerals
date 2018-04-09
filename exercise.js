@@ -37,7 +37,7 @@ RomanNumber.prototype.toInt = function () {
     console.log('nextLetter:', nextLetter);
     console.log('ROMAN_TO_DIGIT[nextLetter]:', ROMAN_TO_DIGIT[nextLetter]);
     console.log('ROMAN_TO_DIGIT[currentLetter]:', ROMAN_TO_DIGIT[currentLetter]);
-    if (nextLetter && ROMAN_TO_DIGIT[nextLetter] < ROMAN_TO_DIGIT[currentLetter]) {
+    if (!doubleLetter && nextLetter && ROMAN_TO_DIGIT[nextLetter] <= ROMAN_TO_DIGIT[currentLetter]) {
       number += ROMAN_TO_DIGIT[currentLetter];
     }
     if (doubleLetter) {
@@ -45,12 +45,14 @@ RomanNumber.prototype.toInt = function () {
       console.log('ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]:', ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
       number += (ROMAN_TO_DIGIT[currentLetter] - ROMAN_TO_DIGIT[previousLetter]);
       doubleLetter = false;
+    } else {
+      if (!nextLetter) {
+        console.log('adding:', ROMAN_TO_DIGIT[currentLetter]);
+        number += ROMAN_TO_DIGIT[currentLetter];
+      }
     }
     if (nextLetter && ROMAN_TO_DIGIT[nextLetter] > ROMAN_TO_DIGIT[currentLetter]) {
       doubleLetter = true;
-    }
-    if (!nextLetter) {
-      number += ROMAN_TO_DIGIT[currentLetter];
     }
     console.log('sum now:', number);
     console.log('');
@@ -76,10 +78,25 @@ testRoman = function () {
     throw new Error();
   }
   var romanNumber2 = new RomanNumber('CDXXIX');
-  console.log('romanNumber2.toInt():', romanNumber2.toInt());
-  // if (romanNumber2.toInt() !== 429) {
-  //   throw new Error();
-  // }
+  if (romanNumber2.toInt() !== 429) {
+    throw new Error();
+  }
+  var romanNumber3 = new RomanNumber('MCDLXXXII');
+  if (romanNumber3.toInt() !== 1482) {
+    throw new Error();
+  }
+  var romanNumber4 = new RomanNumber('MCMLXXX');
+  if (romanNumber4.toInt() !== 1980) {
+    throw new Error();
+  }
+  var romanNumber5 = new RomanNumber('MMMMCMXCIX');
+  if (romanNumber5.toInt() !== 4999) {
+    throw new Error();
+  }
+  var romanNumber6 = new RomanNumber('MMMMDMXCIX');
+  if (romanNumber6.toInt() !== 4599) {
+    throw new Error();
+  }
   // if (romanNumber1.toString() !== 'XX') {
   //   throw new Error();
   // }
