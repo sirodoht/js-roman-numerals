@@ -122,6 +122,7 @@ RomanNumber.prototype.toString = function () {
   if (RomanNumber.isValid(roman)) {
     return roman;
   } else {
+    console.log('roman invalid:', roman);
     throw new Error('invalid value');
   }
 }
@@ -129,7 +130,7 @@ RomanNumber.prototype.toString = function () {
 RomanNumber.isValid = function (numString) {
   // check if all letters are the roman ones
   for (var i = 0; i < numString.length; i++) {
-    if (ROMAN_ELEMENTS.indexOf(numString[i].toUpperCase()) === -1) {
+    if (ROMAN_ELEMENTS.indexOf(numString.charAt(i).toUpperCase()) === -1) {
       return false;
     }
   }
@@ -148,10 +149,31 @@ RomanNumber.isValid = function (numString) {
     lettersAppearance[letter]++;
   });
 
-  // check if letters appear more than 3 times  
+  // check if letters appear more than 4 times
   var keys = Object.keys(lettersAppearance);
   for (var i = 0; i < keys.length; i++) {
-    if (lettersAppearance[keys[i]] > 3) {
+    if (lettersAppearance[keys[i]] > 4) {
+      return false;
+    }
+  }
+
+  // check if a letter appears more than 3 times consecutively
+  var previousLetter = '';
+  var consecutiveTimes = 0;
+  for (var i = 0; i < numString.length; i++) {
+    var letter = numString.charAt(i);
+    if (!previousLetter) {
+      previousLetter = letter;
+      consecutiveTimes++;
+    } else {
+      if (letter === previousLetter) {
+        consecutiveTimes++;
+      } else {
+        previousLetter = letter;
+        consecutiveTimes = 0;
+      }
+    }
+    if (consecutiveTimes > 3) {
       return false;
     }
   }
@@ -228,12 +250,16 @@ testRoman = function () {
     throw new Error('romanNumberWithoutNew test case failed');
   }
 
-  // check
+  // check invalid romans
+  try {
+    RomanNumber.isValid('s');
+  } catch (err) {
 
+  }
   // console.log(RomanNumber.isValid('s'));
   // console.log(RomanNumber.isValid('C'));
   // console.log(RomanNumber.isValid('X'));
-  console.log(RomanNumber.isValid('MMMM'));
+  console.log(RomanNumber.isValid('MMMCM'));
 
   var romanNumbers = {
     'I': 1,
@@ -244,8 +270,8 @@ testRoman = function () {
     'CDXXIX': 429,
     'MCDLXXXII': 1482,
     'MCMLXXX': 1980,
-    'MMMMCMXCIX': 4999,
-    'MMMMDMXCIX': 4599,
+    // 'MMMMCMXCIX': 4999,
+    // 'MMMMDMXCIX': 4599,
   };
   Object.keys(romanNumbers).forEach(function (item) {
     var number = new RomanNumber(item);
