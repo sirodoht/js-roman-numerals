@@ -122,7 +122,6 @@ RomanNumber.prototype.toString = function () {
   if (RomanNumber.isValid(roman)) {
     return roman;
   } else {
-    console.log('roman invalid:', roman);
     throw new Error('invalid value');
   }
 }
