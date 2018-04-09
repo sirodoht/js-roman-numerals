@@ -134,6 +134,15 @@ RomanNumber.isValid = function (numString) {
   return true;
 }
 
+RomanNumber.getRoman = function (number) {
+  var keys = Object.keys(ROMAN_TO_DIGIT);
+  for (var i = 0; i < keys.length; i++) {
+    if (number === ROMAN_TO_DIGIT[keys[i]]) {
+      return keys[i];
+    }
+  }
+}
+
 testRoman = function () {
   // console.log(RomanNumber.isValid('s'));
   // console.log(RomanNumber.isValid('C'));
