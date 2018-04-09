@@ -119,7 +119,11 @@ RomanNumber.prototype.toString = function () {
     letter = letterDict[divideRatio];
   }
 
-  return roman;
+  if (RomanNumber.isValid(roman)) {
+    return roman;
+  } else {
+    throw new Error('invalid value');
+  }
 }
 
 RomanNumber.isValid = function (numString) {
@@ -130,22 +134,24 @@ RomanNumber.isValid = function (numString) {
     }
   }
 
-  // check if more than 3 times of a roman letter appears
-  var letterDict = {};
+  // count roman letter appears individually
+  var lettersAppearance = {
+    'I': 0,
+    'V': 0,
+    'X': 0,
+    'L': 0,
+    'C': 0,
+    'D': 0,
+    'M': 0,
+  };
   numString.split('').forEach(function (letter) {
-    // console.log('letterDict[letter]:', letterDict[letter]);
-    if (letterDict[letter] !== 0) {
-      letterDict[letter] = 0;
-      // console.log('letterDict[letter]:', letterDict[letter]);
-    } else {
-      letterDict[letter]++;
-    }
+    lettersAppearance[letter]++;
   });
-  console.log('letterDict:', letterDict);
 
-  var keys = Object.keys(letterDict);
+  // check if letters appear more than 3 times  
+  var keys = Object.keys(lettersAppearance);
   for (var i = 0; i < keys.length; i++) {
-    if (letterDict[keys[i]] > 3) {
+    if (lettersAppearance[keys[i]] > 3) {
       return false;
     }
   }
