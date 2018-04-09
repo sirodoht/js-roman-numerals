@@ -17,7 +17,13 @@ var ROMAN_TO_DIGIT = {
 };
 
 function RomanNumber(num) {
+  if (!num) {
+    throw new Error('invalid value');
+  }
   if (Number.isInteger(num)) {
+    if (num < 1 || num > 3999) {
+      throw new Error('invalid range');
+    }
     this.number = num;
   } else if (RomanNumber.isValid(num)) {
     this.roman = num;
@@ -27,6 +33,10 @@ function RomanNumber(num) {
 }
 
 RomanNumber.prototype.toInt = function () {
+  if (this.number) {
+    return this.number;
+  }
+
   var number = 0;
   var doubleLetter = false;
   for (var i = 0; i < this.roman.length; i++) {
@@ -53,6 +63,10 @@ RomanNumber.prototype.toInt = function () {
 }
 
 RomanNumber.prototype.toString = function () {
+  if (this.roman) {
+    return this.roman;
+  }
+
   var roman = '';
   var done = false;
 
@@ -70,7 +84,6 @@ RomanNumber.prototype.toString = function () {
   var divideRatio = 1000;
   var letter = 'M';
   while (!done) {
-
     var scale = Math.floor((this.number % modRatio) / divideRatio);
     if (scale <= 3) {
       for (var i = 0; i < scale; i++) {
@@ -124,6 +137,46 @@ RomanNumber.getRoman = function (number) {
 }
 
 testRoman = function () {
+  // check null
+  try {
+    new RomanNumber(null); // this should throw
+    throw new Error('test case for null failed'); // this should never run
+  } catch (err) {
+    if (err.message !== 'invalid value') {
+      throw new Error('test case for null failed');
+    }
+  }
+
+  // check empty
+  try {
+    new RomanNumber(''); // this should throw
+    throw new Error('test case for empty failed'); // this should never run
+  } catch (err) {
+    if (err.message !== 'invalid value') {
+      throw new Error('test case for empty failed');
+    }
+  }
+
+  // check range <1
+  try {
+    new RomanNumber(-1023); // this should throw
+    throw new Error('test case for range failed'); // this should never run
+  } catch (err) {
+    if (err.message !== 'invalid range') {
+      throw new Error('test case for range failed');
+    }
+  }
+
+  // check range >3999
+  try {
+    new RomanNumber(5678); // this should throw
+    throw new Error('test case for range failed'); // this should never run
+  } catch (err) {
+    if (err.message !== 'invalid range') {
+      throw new Error('test case for range failed');
+    }
+  }
+
   // console.log(RomanNumber.isValid('s'));
   // console.log(RomanNumber.isValid('C'));
   // console.log(RomanNumber.isValid('X'));
@@ -158,6 +211,21 @@ testRoman = function () {
     }
   });
 
+  // test case from pdf
+  var romanNumber1 = new RomanNumber('XX');
+  var romanNumber2 = new RomanNumber(40);
+  if (romanNumber1.toInt() != 20) {
+    throw new Error('romanNumber1 test case failed');
+  }
+  if (romanNumber1.toString() != 'XX') {
+    throw new Error('romanNumber1 test case failed');
+  }
+  if (romanNumber2.toInt() != 40) {
+    throw new Error('romanNumber2 test case failed');
+  }
+  if (romanNumber2.toString() != 'XL') {
+    throw new Error('romanNumber2 test case failed');
+  }
 };
 
 testRoman();
