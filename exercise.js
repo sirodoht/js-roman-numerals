@@ -69,8 +69,11 @@ RomanNumber.prototype.toString = function () {
 
   var letterDict = {
     1000: 'M',
+    500: 'D',
     100: 'C',
+    50: 'L',
     10: 'X',
+    5: 'V',
     1: 'I',
   };
 
@@ -92,12 +95,20 @@ RomanNumber.prototype.toString = function () {
       }
     } else if (scale === 4) {
 
-    } else if (scale === 5) {
-
-    } else if (scale > 5 && scale < 9) {
-      console.log('scale 6, 7, 8 calc');
+    } else if (scale >= 5 && scale < 9) {
+      console.log('scale 5, 6, 7, 8 calc');
       var scaleMultiplied = scale * divideRatio;
+      var halfScale = modRatio / 2;
+      roman += RomanNumber.getRoman(halfScale);
+      console.log('scaleMultiplied:', scaleMultiplied);
+      console.log('halfScale:', halfScale);
+      console.log('roman now (half):', roman);
 
+      var copiesLeft = scale - 5;
+      for (var i = 0; i < copiesLeft; i++) {
+        roman += letter;
+      }
+      console.log('roman now:', roman);
     } else if (scale === 9) {
       console.log('scale 9 calc');
       var scaleMultiplied = scale * divideRatio;
@@ -113,16 +124,17 @@ RomanNumber.prototype.toString = function () {
       roman += letterCombination;
     }
 
+    if (letter === 'I') {
+      done = true;
+    }
     modRatio /= 10;
     divideRatio /= 10;
     letter = letterDict[divideRatio];
-    if (letter === 'X') {
-      done = true;
-    }
     console.log('');
   }
 
   console.log('final roman:', roman);
+  return roman;
 }
 
 RomanNumber.isValid = function (numString) {
@@ -163,7 +175,9 @@ testRoman = function () {
   //   }
   // });
 
-  var romanNumber1 = new RomanNumber(1968);
+  // console.log('getRoman:', RomanNumber.getRoman(900));
+
+  var romanNumber1 = new RomanNumber(1945);
   console.log('1968 toString:', romanNumber1.toString());
 };
 
