@@ -2,14 +2,19 @@ var ROMAN_ELEMENTS = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
 
 var ROMAN_TO_DIGIT = {
   'I': 1,
+  'IV': 4,
   'V': 5,
+  'IX': 9,
   'X': 10,
+  'XL': 40,
   'L': 50,
+  'XC': 90,
   'C': 100,
+  'CD': 400,
   'D': 500,
+  'CM': 900,
   'M': 1000,
 };
-// MCMLIII
 
 function RomanNumber(num) {
   if (Number.isInteger(num)) {
@@ -59,7 +64,51 @@ RomanNumber.prototype.toInt = function () {
 }
 
 RomanNumber.prototype.toString = function () {
+  var roman = '';
+  var done = false;
 
+  var letterDict = {
+    1000: 'M',
+    100: 'C',
+    10: 'X',
+    1: 'I',
+  };
+
+  console.log('this.number:', this.number);
+
+  var modRatio = 10000;
+  var divideRatio = 1000;
+  var letter = 'M';
+  while (!done) {
+    console.log('modRatio:', modRatio);
+    console.log('divideRatio:', divideRatio);
+    console.log('letter:', letter);
+
+    var scale = Math.floor((this.number % modRatio) / divideRatio);
+    console.log('scale:', scale);
+    if (scale <= 3) {
+      for (var i = 0; i < scale; i++) {
+        roman += letter;
+      }
+    } else if (scale === 4) {
+
+    } else if (scale === 5) {
+
+    } else if (scale > 5 && scale < 9) {
+
+    } else if (scale === 9) {
+      console.log('scale 9 calc');
+    }
+
+    modRatio /= 10;
+    divideRatio /= 10;
+    letter = letterDict[divideRatio];
+    if (letter === 'X') {
+      done = true;
+    }
+  }
+
+  console.log('final roman:', roman);
 }
 
 RomanNumber.isValid = function (numString) {
